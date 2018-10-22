@@ -13,18 +13,58 @@
 class Player
 {
         public:
+		int damageStats();
+
+		// Movement misc.
 		int x = 0;
 		int y = 0;
+		
+		// Player stats
+		int health = 5;
+		int strength = 2;
+		int defence;
+		int range = 1;
+		int exp;
+
+		//Render/display settings
 		std::string getIcon();
-        private:
-		std::string icon = "Ω";
+		std::string icon;
+};
+
+class Entity
+{
+	public:
+		int damageStats();  // Damage stats of an entity
+		void checkDeath();
+
+		// Moement misc.
+		int x;
+		int y;
+
+		// Entity stats
+		int health;
+		int strength;
+		int defence;
+		int range;
+		int intelegence;
+		bool isDead;
+
+		char relation = 'e'; // 'e' for enemy, 'f' for friendly
+
+		// Render/display settings
+		char icon = 'm';
 };
 
 class Tile
 {
 	public:
-		void setTile(std::string x);
+		void setTile(std::string x);  // Discribes the tile's structure (room tile, wall tile, ext)
+		void setState(char wantedState);  // Discribes the tiles current state such as storing the player, entities, items, ext
 		std::string getTile();
+
+		char state = ' ';
+
+		bool isCenterTile = false;  // Creates lines to connect other 'center tiles'
 	private:
 		std::string tile = " ";
 };
@@ -35,15 +75,50 @@ class Map
 		const int width = 40;
 		const int height = 20;
 		int numberOfRooms;
+		int numberOfEntitys = 10;
+		int wormX = 1;
+		int wormY = 1;
 	public:
-		void init();
-		void update();
-		void spawnPlayer();
+		// Map Updates
+		void init(std::string typeOfDungeon);
+		void update(); // The overall game loop
+		void updateStates(); // Updates the states of each tile
 		void createMap(int numberOfRooms, int roomWidth, int roomHeight);
-		void render();
+
+		// Spawning functions
+		void spawnPlayer();
+		void spawnEntity(int numberOfEntitys);
 		
-		void movePlayer();
+		// Render functions
+		void render();
+		void debugRender(); // Renders the image to show more information about each tile
+
+		// Save/Load txt files functions
+		void saveLog(std::string textToSave);
+		
+		// Move related functions
+		void playerTurn();
+		void movePlayer(char direction);
+		void playerAttack(char direction);
+		void entityTurn();
+		char entityAttackCheck(int id);
+		void entityAttack(int id, char direction);
+		void moveEntity(int id);
 		bool moveRequest(int x, int y, char direction);
+
+		// Objects
+		Map();
 		Player p;
 		Tile t[40][20];
+		Entity e[];
+};
+
+class DungeonControler
+{
+	public:
+		void createMap();
+		
+		int numberOfEntitys;
+		std::string floorType;
+
 };

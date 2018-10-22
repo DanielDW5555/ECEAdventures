@@ -6,10 +6,10 @@ using namespace std;
 
 int main()
 {
-	Map m; // Creates a map
-	m.init(); // Initalises the map
-
-	m.update();
+	int numberOfEntitys = 10;
+	DungeonControler dc;
+	// Creates a map
+	dc.createMap();// Initalises the map
 
 	return 0;
 }
