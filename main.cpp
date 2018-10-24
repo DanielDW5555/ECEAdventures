@@ -9,6 +9,7 @@ int main()
 	int numberOfEntitys = 10;
 	DungeonControler dc;
 	// Creates a map
+	dc.loadContent();
 	dc.createMap();// Initalises the map
 
 	return 0;
