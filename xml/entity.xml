@@ -1,0 +1,13 @@
+<Entity>
+	<Mandatory>
+		<Name></Name>
+		<Description></Description>
+		<Health></Health>
+		<Strength></Strength>
+		<Defense></Defense>
+		<Range></Range>
+		<Intelligence></Intelligence>
+	</Mandatory>
+	<Special>
+	</Special>
+</Entity>
