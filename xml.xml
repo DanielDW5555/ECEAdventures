@@ -1,0 +1,37 @@
+<?xml version=\"1.0\"?>
+<Entity>
+	<Mandatory>
+		<Name>ayby</Name>
+		<Description>This is a test</Description>
+		<Health>3</Health>
+		<Strength>1</Strength>
+		<Defense>0</Defense>
+		<Range>1</Range>
+		<Intelligence>0</Intelligence>
+	</Mandatory>
+</Entity>
+
+<Entity>
+        <Mandatory>
+                <Name>a</Name>
+                <Description>a</Description>
+                <Health>a</Health>
+                <Strength>1</Strength>
+                <Defense>0</Defense>
+                <Range>1</Range>
+                <Intelligence>0</Intelligence>
+        </Mandatory>
+</Entity>
+
+<Entity>
+        <Mandatory>
+                <Name>b</Name>
+                <Description>b</Description>
+                <Health>b</Health>
+                <Strength>1</Strength>
+                <Defense>0</Defense>
+                <Range>1</Range>
+                <Intelligence>0</Intelligence>
+        </Mandatory>
+</Entity>
+

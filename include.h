@@ -20,11 +20,14 @@ class Player
 		int y = 0;
 		
 		// Player stats
+		int level = 1;
 		int health = 5;
+		int maxHealth = 5;
 		int strength = 2;
 		int defence;
 		int range = 1;
-		int exp;
+		int exp = 0;
+		int expToNextLevel = 2;
 
 		//Render/display settings
 		std::string getIcon();
@@ -88,13 +91,16 @@ class Map
 		// Spawning functions
 		void spawnPlayer();
 		void spawnEntity(int numberOfEntitys);
+		void entityInit(int numberOfEntitys, std::string dungeonType); // Configures the entity based on the map type and player level
 		
 		// Render functions
 		void render();
 		void debugRender(); // Renders the image to show more information about each tile
+		void printPlayerStats();
 
 		// Save/Load txt files functions
 		void saveLog(std::string textToSave);
+		void loadLog(int numberOfLogs); // Prints the newest logs in cout
 		
 		// Move related functions
 		void playerTurn();
@@ -117,6 +123,9 @@ class DungeonControler
 {
 	public:
 		void createMap();
+
+		// Initalise content
+		void loadContent();
 		
 		int numberOfEntitys;
 		std::string floorType;

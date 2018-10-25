@@ -105,6 +105,48 @@ void Map::render()
                 }
                 cout << endl;
         }
+
+	// Renders the players stats after the map has been rendered
+	printPlayerStats();
+
+	// Prints the newest logs
+	loadLog(5);
+}
+
+// Formats the player stats so that it is rendered evenly depending on the width of the map
+void Map::printPlayerStats()
+{
+	// Renders players icon
+	cout << p.icon << ":" << endl;
+
+	// Renders the player health
+	string playerHealth = "HP:"+to_string(p.health)+" [";
+	double healthBarWidth = width-playerHealth.size()-1;
+	double healthPercent = (double)p.health/(double)p.maxHealth;
+	double amountOfHpToRender = healthPercent*healthBarWidth;
+
+	cout << playerHealth;
+	for(int i = 0; i < width-playerHealth.size()-1; i ++)
+	{
+		if(i < amountOfHpToRender) cout << "▓";
+		else cout << ' ';
+	}
+	cout <<  ']';
+	cout << endl;
+
+	string playerExp = "EXP:"+to_string(p.exp)+" [";
+	double expBarWidth = width-playerExp.size()-1;
+	double expPercent = (double)p.exp/(double)p.expToNextLevel;
+	double amountOfExpToRender = expPercent*expBarWidth;
+
+	cout << playerExp;
+	for(int i = 0; i < width-playerExp.size(); i ++)
+	{
+		if(i < amountOfExpToRender) cout << "▒";
+		else cout << ' ';
+	}
+	cout << ']';
+	cout << endl;
 }
 
 void Map::saveLog(string text)
@@ -112,6 +154,31 @@ void Map::saveLog(string text)
 	ofstream saveText ("logs/logs.txt", std::ios_base::app);
 	saveText << text+"\n";
 	saveText.close();
+}
+
+void Map::loadLog(int numberOfLogs)
+{
+	// Gets number of logs in logs.txt
+	ifstream loadText;
+	loadText.open("logs/logs.txt");
+	int numberOfLines = 0;
+	string line = "";
+	while(getline(loadText, line)) numberOfLines++;
+	loadText.close();
+
+	// Prints the newest logs
+	loadText.open("logs/logs.txt");
+	cout << "Log Journal:" << endl;
+	int currentLine = 0;
+	while(getline(loadText, line))
+	{
+		if(currentLine >= numberOfLines-numberOfLogs)
+		{
+			cout << line << endl;
+		}
+		currentLine ++;
+	}
+	loadText.close();
 }
 
 void Map::debugRender()
@@ -164,6 +231,14 @@ void Map::spawnEntity(int numberOfEntitys)
 	
 }
 
+void Map::entityInit(int numberOfEntitys, string dungeonType)
+{
+	for(int id = 0; id < numberOfEntitys; id++)
+	{
+		e[id].intelegence = 0;
+	}
+}
+
 // This is called whenever an entity wants to move on the map
 bool Map::moveRequest(int x, int y, char direction)
 {
@@ -194,7 +269,10 @@ void Map::playerAttack(char direction)
 				if(e[id].x == p.x and e[id].y == p.y-p.range)
 				{
 					e[id].health = e[id].health - playerDamage;
-					entityId = id;
+					string entityIcon = string(1, e[id].icon);
+        				string playerDmg = to_string(playerDamage);
+        				string logs = p.icon + ": delt " + playerDmg + " to " + entityIcon;
+        				saveLog(logs);
 				}
 		}
 		else if(direction == 'k' and t[p.x][p.y+p.range].state == 'e')
@@ -203,7 +281,10 @@ void Map::playerAttack(char direction)
                                 if(e[id].x == p.x and e[id].y == p.y+p.range)
 				{
 					e[id].health = e[id].health - playerDamage;
-					entityId = id;
+					string entityIcon = string(1, e[id].icon);
+        				string playerDmg = to_string(playerDamage);
+        				string logs = p.icon + ": delt " + playerDmg + " to " + entityIcon;
+        				saveLog(logs);
 				}
                 }
 		else if(direction == 'j' and t[p.x-p.range][p.y].state == 'e')
@@ -212,7 +293,10 @@ void Map::playerAttack(char direction)
                                 if(e[id].x == p.x-p.range and e[id].y == p.y)
 				{
 					e[id].health = e[id].health - playerDamage;
-					entityId = id;
+					string entityIcon = string(1, e[id].icon);
+        				string playerDmg = to_string(playerDamage);
+        				string logs = p.icon + ": delt " + playerDmg + " to " + entityIcon;
+        				saveLog(logs);
 				}
                 }
 		else if(direction == 'l' and t[p.x+p.range][p.y].state == 'e')
@@ -221,22 +305,18 @@ void Map::playerAttack(char direction)
                                 if(e[id].x == p.x+p.range and e[id].y == p.y)
 				{
 					e[id].health = e[id].health - playerDamage;
-					entityId = id;
+					string entityIcon = string(1, e[id].icon);
+        				string playerDmg = to_string(playerDamage);
+        				string logs = p.icon + ": delt " + playerDmg + " to " + entityIcon;
+        				saveLog(logs);
 				}
 		}
 	}
-
-	// Converts the attack action that the player did to a string and saves it in the logs.txt file
-	string entityIcon(2, e[entityId].icon);
-	string playerDmg = std::to_string(playerDamage);
-	string logs = p.icon + ": delt " + playerDmg + " to " + entityIcon;
-	saveLog(logs);
 }
 
 // Players actions that can be done per turn
 void Map::playerTurn()
 {
-	cout << "PLAYER" << endl;
 	bool hasMoved = false;
 	while(hasMoved == false)
 	{
@@ -261,7 +341,6 @@ void Map::playerTurn()
 			hasMoved = true;
 		}
 	}
-	cout << "Player health " << p.health << endl;
 	updateStates();
 
 }
@@ -270,42 +349,44 @@ void Map::playerTurn()
 void Map::moveEntity(int id)
 {
 	// Stupid enemy movement
-        bool hasMoved = false;
-        while(hasMoved == false)
-        {
-        	int choice = rand() % 4;
-                switch(choice)
-                {
-                case 0:
-                	if(moveRequest(e[id].x, e[id].y, 'w'))
-                        {
-                        	e[id].y--;
-                                hasMoved = true;
+	if(e[id].intelegence == 0)
+	{
+        	bool hasMoved = false;
+        	while(hasMoved == false)
+        	{
+        		int choice = rand() % 4;
+                	switch(choice)
+                	{
+                	case 0:
+                		if(moveRequest(e[id].x, e[id].y, 'w'))
+                        	{
+                        		e[id].y--;
+                                	hasMoved = true;
+				}
+                        	break;
+                	case 1:
+                        	if(moveRequest(e[id].x, e[id].y, 's'))
+                        	{
+                                	e[id].y++;
+                                	hasMoved = true;
+                        	}
+                        	break;
+                	case 2:
+                        	if(moveRequest(e[id].x, e[id].y, 'a'))
+                        	{
+                                	e[id].x--;
+                        	break;
+				}
+                	case 3:
+                        	if(moveRequest(e[id].x, e[id].y, 'd'))
+                        	{
+                                	e[id].x++;
+                                	hasMoved = true;
+                        	}
+                        	break;
 			}
-                        break;
-                case 1:
-                        if(moveRequest(e[id].x, e[id].y, 's'))
-                        {
-                                e[id].y++;
-                                hasMoved = true;
-                        }
-                        break;
-                case 2:
-                        if(moveRequest(e[id].x, e[id].y, 'a'))
-                        {
-                                e[id].x--;
-                        break;
-			}
-                case 3:
-                        if(moveRequest(e[id].x, e[id].y, 'd'))
-                        {
-                                e[id].x++;
-                                hasMoved = true;
-                        }
-                        break;
                 }
          }
-
 }
 
 void Map::entityAttack(int id, char direction)
@@ -393,7 +474,6 @@ void Map::update()
 	while(true)
 	{
 		srand(time(NULL));
-		cout << "Updating..." << endl;
 		playerTurn();
 		entityTurn();
 		updateStates();
@@ -419,14 +499,15 @@ void Map::init(string dungeonType)
         	int maxSize = 10;
         	int minSize = 4;
 		createMap(numberOfRooms, maxSize, minSize);
+		entityInit(numberOfEntitys, dungeonType);
         	spawnEntity(numberOfEntitys);
 
 	}
 	else
 	{
 		int numberOfRooms = 4;
-		int maxSize = 15;
-		int minSize = 5;
+		int maxSize = 10;
+		int minSize = 2;
 		createMap(numberOfRooms, maxSize, minSize);
         	spawnEntity(numberOfEntitys);
 	}
