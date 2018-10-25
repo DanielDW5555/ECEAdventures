@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "include.h"
+#include "LinuxGetch.h"
 using namespace std;
 
 // Generates a map based on the parameters passed in
@@ -320,7 +321,7 @@ void Map::playerTurn()
 	while(hasMoved == false)
 	{
 		char turn;
-        	cin >> turn;
+		turn = LinuxGetch::getch();
 
 		// Player movement
 		if(turn == 'w' or turn == 'a' or turn == 's' or turn == 'd')
