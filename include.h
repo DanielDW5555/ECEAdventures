@@ -1,15 +1,4 @@
-
-/*
- * TODO
- * - Create an 'entity' class that spawns other creatures on the map that can move and interact with the player
- * - Create a log system that logs actions done by player or enemies
- * - Create a user input system that can take more than player movement (options such as move, attack, help, ext)
- * - Create another layer of logic for the tile class so that more data about the tile can be stored (such as if there is an entity on the tile, item on tile, ext)
- * - Create an tile where if the player walks on it the game ends
- *
- *   BUGS
- *   - When the player spawns it sometimes causes an infinite loop
- */
+#include <vector>
 class Player
 {
         public:
@@ -24,10 +13,13 @@ class Player
 		int health = 5;
 		int maxHealth = 5;
 		int strength = 2;
-		int defence;
+		int defense;
 		int range = 1;
 		int exp = 0;
 		int expToNextLevel = 2;
+
+		std::string name;
+		std::string description;
 
 		//Render/display settings
 		std::string getIcon();
@@ -39,6 +31,7 @@ class Entity
 	public:
 		int damageStats();  // Damage stats of an entity
 		void checkDeath();
+		int CR(); // Challenge rating calculation
 
 		// Moement misc.
 		int x;
@@ -47,15 +40,22 @@ class Entity
 		// Entity stats
 		int health;
 		int strength;
-		int defence;
+		int defense;
 		int range;
-		int intelegence;
+		int intelligence;
 		bool isDead;
+
+		std::string name;
+		std::string description;
 
 		char relation = 'e'; // 'e' for enemy, 'f' for friendly
 
 		// Render/display settings
-		char icon = 'm';
+		std::string icon = "?";
+
+		// Constructors
+		Entity(std::string icon, std::string name, std::string description, int health, int strength, int defence, int range, int intellegence);
+		Entity();
 };
 
 class Tile
@@ -75,10 +75,10 @@ class Tile
 class Map
 {
 	private:
-		const int width = 40;
-		const int height = 20;
+		const int width = 70;
+		const int height = 35;
 		int numberOfRooms;
-		int numberOfEntitys = 10;
+		int numberOfEntitys = 1;
 		int wormX = 1;
 		int wormY = 1;
 	public:
@@ -97,6 +97,7 @@ class Map
 		void render();
 		void debugRender(); // Renders the image to show more information about each tile
 		void printPlayerStats();
+		void printEntityStats();
 
 		// Save/Load txt files functions
 		void saveLog(std::string textToSave);
@@ -112,22 +113,38 @@ class Map
 		void moveEntity(int id);
 		bool moveRequest(int x, int y, char direction);
 
-		// Objects
-		Map();
+		// Objects/Constructors
+		Map(int numberOfEntitys, Entity e[30]);
 		Player p;
-		Tile t[40][20];
-		Entity e[];
+		Tile t[70][35];
+		Entity e[30];
 };
 
 class DungeonControler
 {
 	public:
+		int level; // Current floor of the dungeon
+		int amountOfEntitys;
+		double minLevel;
+		double maxLevel;
+
 		void createMap();
+		void generateEntitys();
+		void sortEntitys();
+		void calculateDifficulty();
 
 		// Initalise content
+		void init();
+		void readEntityXml(std::string xmlFileName);
 		void loadContent();
+
+		// Debug functions
+		void printLoadedXml();
 		
 		int numberOfEntitys;
 		std::string floorType;
+		std::vector<Entity> entitys;
 
+		Entity generatedEntityList[30];
+		DungeonControler();
 };
