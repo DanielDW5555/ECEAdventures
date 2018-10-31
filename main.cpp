@@ -8,9 +8,8 @@ int main()
 {
 	int numberOfEntitys = 10;
 	DungeonControler dc;
-	// Creates a map
-	dc.loadContent();
-	dc.createMap();// Initalises the map
+	// Runs functions in dungeon controler to create the dungeon
+	dc.init();
 
 	return 0;
 }

@@ -149,6 +149,22 @@ void Map::printPlayerStats()
 	cout << endl;
 }
 
+void Map::printEntityStats()
+{
+	for(int id = 0; id < numberOfEntitys; id++)
+	{
+		cout << "ENTITY " << id << ":" << endl;
+		cout << "Icon:" << e[id].icon << endl;
+		cout << "Name:" << e[id].name << endl;
+		cout << "Description:" << e[id].description << endl;
+		cout << "Health:" << e[id].health << endl;
+		cout << "Defense:" << e[id].defense << endl;
+		cout << "Range:" << e[id].range << endl;
+		cout << "Intelligence:" << e[id].intelligence << endl;
+		cout << "___________________________________" << endl << endl;
+	}
+}
+
 void Map::saveLog(string text)
 {
 	ofstream saveText ("logs/logs.txt", std::ios_base::app);
@@ -220,13 +236,6 @@ void Map::spawnEntity(int numberOfEntitys)
 		}
         	e[id].x = randX;
         	e[id].y = randY;
-
-		// Sets random health based on the type/class of entity
-		e[id].health = (rand() % 3)+1;
-		e[id].range = 1;
-		e[id].strength = 1;
-		e[id].isDead = false;
-		e[id].icon = 'm';
 	}
 	
 }
@@ -235,7 +244,7 @@ void Map::entityInit(int numberOfEntitys, string dungeonType)
 {
 	for(int id = 0; id < numberOfEntitys; id++)
 	{
-		e[id].intelegence = 0;
+		e[id].intelligence = 0;
 	}
 }
 
@@ -269,9 +278,8 @@ void Map::playerAttack(char direction)
 				if(e[id].x == p.x and e[id].y == p.y-p.range)
 				{
 					e[id].health = e[id].health - playerDamage;
-					string entityIcon = string(1, e[id].icon);
         				string playerDmg = to_string(playerDamage);
-        				string logs = p.icon + ": delt " + playerDmg + " to " + entityIcon;
+        				string logs = p.icon + ": delt " + playerDmg + " to " + e[id].icon;
         				saveLog(logs);
 				}
 		}
@@ -281,9 +289,8 @@ void Map::playerAttack(char direction)
                                 if(e[id].x == p.x and e[id].y == p.y+p.range)
 				{
 					e[id].health = e[id].health - playerDamage;
-					string entityIcon = string(1, e[id].icon);
         				string playerDmg = to_string(playerDamage);
-        				string logs = p.icon + ": delt " + playerDmg + " to " + entityIcon;
+        				string logs = p.icon + ": delt " + playerDmg + " to " + e[id].icon;
         				saveLog(logs);
 				}
                 }
@@ -293,9 +300,8 @@ void Map::playerAttack(char direction)
                                 if(e[id].x == p.x-p.range and e[id].y == p.y)
 				{
 					e[id].health = e[id].health - playerDamage;
-					string entityIcon = string(1, e[id].icon);
         				string playerDmg = to_string(playerDamage);
-        				string logs = p.icon + ": delt " + playerDmg + " to " + entityIcon;
+        				string logs = p.icon + ": delt " + playerDmg + " to " + e[id].icon;
         				saveLog(logs);
 				}
                 }
@@ -305,9 +311,8 @@ void Map::playerAttack(char direction)
                                 if(e[id].x == p.x+p.range and e[id].y == p.y)
 				{
 					e[id].health = e[id].health - playerDamage;
-					string entityIcon = string(1, e[id].icon);
         				string playerDmg = to_string(playerDamage);
-        				string logs = p.icon + ": delt " + playerDmg + " to " + entityIcon;
+        				string logs = p.icon + ": delt " + playerDmg + " to " + e[id].icon;
         				saveLog(logs);
 				}
 		}
@@ -349,7 +354,7 @@ void Map::playerTurn()
 void Map::moveEntity(int id)
 {
 	// Stupid enemy movement
-	if(e[id].intelegence == 0)
+	if(e[id].intelligence == 0)
 	{
         	bool hasMoved = false;
         	while(hasMoved == false)
@@ -477,6 +482,7 @@ void Map::update()
 		playerTurn();
 		entityTurn();
 		updateStates();
+		printEntityStats();
 		render();
 		// debugRender();
 	}
@@ -521,6 +527,10 @@ void Map::init(string dungeonType)
 
 }
 
-Map::Map() : numberOfEntitys(5)
+Map::Map(int numberOfEntitys, Entity entity[30]) : numberOfEntitys(numberOfEntitys)
 {
+	for(int id = 0; id < numberOfEntitys; id ++)
+	{
+		e[id] = entity[id];
+	}
 }
