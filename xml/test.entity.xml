@@ -1,0 +1,15 @@
+<?xml version=\"1.0\" encoding="ISO-8859" standalone="yes"?>
+
+<Entity>
+	<Mandatory>
+		<Icon>~</Icon>
+		<Name>Test</Name>
+		<Description>This is line 1
+this is line 2</Description>
+		<Health>1</Health>
+		<Strength>0</Strength>
+		<Defense>0</Defense>
+		<Range>1</Range>
+		<Intelligence>0</Intelligence>
+	</Mandatory>
+</Entity>

@@ -1,0 +1,13 @@
+<?xml version=\"1.0\" encoding="ISO-8859" standalone="yes"?>
+<Entity>
+	<Mandatory>
+		<Icon>m</Icon>
+		<Name>Mechanical Spider</Name>
+		<Description>A malfunctioning mechanical spider.  It seems to be be maintaining the power systems.</Description>
+		<Health>3</Health>
+		<Strength>1</Strength>
+		<Defense>0</Defense>
+		<Range>1</Range>
+		<Intelligence>0</Intelligence>
+	</Mandatory>
+</Entity>
