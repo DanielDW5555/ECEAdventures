@@ -1,0 +1,13 @@
+<?xml version=\"1.0\" encoding="ISO-8859" standalone="yes"?>
+<Entity>
+    <Mandatory>
+        <Icon>C</Icon>
+        <Name>Mechanical CMOS</Name>
+        <Description>A scary CMOS chip that is big and looks like a mechanical bug!</Description>
+        <Health>7</Health>
+        <Strength>2</Strength>
+        <Defense>0</Defense>
+        <Range>1</Range>
+        <Intelligence>1</Intelligence>
+    </Mandatory>
+</Entity>

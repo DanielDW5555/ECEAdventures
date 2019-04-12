@@ -1,2 +1,4 @@
+CMOS.entity.xml
+house.entity.xml
 mechSpider.entity.xml
 test.entity.xml

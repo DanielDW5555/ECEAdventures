@@ -10,6 +10,6 @@ this is line 2</Description>
 		<Strength>0</Strength>
 		<Defense>0</Defense>
 		<Range>1</Range>
-		<Intelligence>0</Intelligence>
+		<Intelligence>1</Intelligence>
 	</Mandatory>
 </Entity>

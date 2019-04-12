@@ -4,7 +4,7 @@ using namespace std;
 
 // Constructors
 // Entity with its values
-Entity::Entity(string icon, string name, string description, int health, int strength, int defense, int range, int intelligence) : icon(icon), name(name), description(description), health(health), strength(strength), defense(defense), range(range), intelligence(intelligence)
+Entity::Entity(string icon, string name, string description, int health, int strength, int defense, int range, int intelligence, classType t) : icon(icon), name(name), description(description), health(health), strength(strength), defense(defense), range(range), intelligence(intelligence), type(t)
 {
 }
 // Entity with no values declared
@@ -23,7 +23,7 @@ void Entity::checkDeath()
 	if(health <= 0)	isDead = true;
 }
 
-int Entity::damageStats()
+int Entity::damage()
 {
 	return strength;
 }

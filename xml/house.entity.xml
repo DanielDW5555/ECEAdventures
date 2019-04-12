@@ -1,0 +1,13 @@
+<?xml version=\"1.0\" encoding="ISO-8859" standalone="yes"?>
+<Entity>
+    <Mandatory>
+        <Icon>H</Icon>
+        <Name>Andrew House</Name>
+        <Description>AAAAAAAAAAAAAAAAAAA ITS A HOUSE!!!!.</Description>
+        <Health>10</Health>
+        <Strength>1</Strength>
+        <Defense>5</Defense>
+        <Range>1</Range>
+        <Intelligence>1</Intelligence>
+    </Mandatory>
+</Entity>
